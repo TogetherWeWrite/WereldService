@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace WereldService.Entities
 {
-    public class Wereld
+    public class World
     {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
     }
 }
