@@ -1,15 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <PropertyGroup>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>a30ea9f8-00ea-499d-9d02-8d0a8bc4701f</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="obj\Debug\netcoreapp3.1\WereldService.AssemblyInfo.cs" />
-    <Compile Include="obj\Release\netcoreapp3.1\WereldService.AssemblyInfo.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <Content Include="obj\Debug\netcoreapp3.1\staticwebassets\WereldService.StaticWebAssets.xml" />
@@ -20,15 +18,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="MongoDB.Bson" Version="2.10.3" />
     <PackageReference Include="MongoDB.Driver" Version="2.10.3" />
     <PackageReference Include="MongoDB.Driver.Core" Version="2.10.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Entities\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>
