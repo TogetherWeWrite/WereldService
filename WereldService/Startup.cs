@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WereldService.Repositories;
+using WereldService.Services;
 using WereldService.WereldStoreDatabaseSettings;
 using WereldService.WereldStoreDatabaseSettings.authenticationservice.DatastoreSettings;
 
@@ -30,10 +32,14 @@ namespace WereldService
         {
             services.AddControllers();
             services.Configure<WereldstoreDatabaseSettings>(
-    Configuration.GetSection(nameof(WereldstoreDatabaseSettings)));
+                Configuration.GetSection(nameof(WereldstoreDatabaseSettings)));
 
             services.AddSingleton<IWereldstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<WereldstoreDatabaseSettings>>().Value);
+
+            services.AddTransient<IWorldRepository, WorldRepository>();
+
+            services.AddTransient<IWorldManagementService, WorldManagementService>();
 
         }
 
