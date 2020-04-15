@@ -7,12 +7,44 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="obj\Debug\netcoreapp3.1\WereldService.AssemblyInfo.cs" />
+    <Compile Include="obj\Release\netcoreapp3.1\WereldService.AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="obj\Debug\netcoreapp3.1\staticwebassets\WereldService.StaticWebAssets.xml" />
+    <Content Include="obj\Debug\netcoreapp3.1\WereldService.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\project.assets.json" />
+    <Content Include="obj\WereldService.csproj.nuget.dgspec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    <PackageReference Include="MongoDB.Bson" Version="2.10.3" />
+    <PackageReference Include="MongoDB.Driver" Version="2.10.3" />
+    <PackageReference Include="MongoDB.Driver.Core" Version="2.10.3" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Entities\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="obj\Debug\netcoreapp3.1\staticwebassets\WereldService.StaticWebAssets.Manifest.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.AssemblyInfoInputs.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.assets.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.csproj.CopyComplete" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.csproj.CoreCompileInputs.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.csprojAssemblyReference.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.MvcApplicationPartsAssemblyInfo.cache" />
+    <None Include="obj\Debug\netcoreapp3.1\WereldService.RazorTargetAssemblyInfo.cache" />
+    <None Include="obj\project.nuget.cache" />
+    <None Include="obj\Release\netcoreapp3.1\WereldService.AssemblyInfoInputs.cache" />
+    <None Include="obj\Release\netcoreapp3.1\WereldService.assets.cache" />
+    <None Include="obj\WereldService.csproj.nuget.g.props" />
+    <None Include="obj\WereldService.csproj.nuget.g.targets" />
   </ItemGroup>
 
 
