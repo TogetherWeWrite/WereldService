@@ -10,6 +10,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using WereldService.WereldStoreDatabaseSettings;
+using WereldService.WereldStoreDatabaseSettings.authenticationservice.DatastoreSettings;
 
 namespace WereldService
 {
@@ -26,6 +29,12 @@ namespace WereldService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.Configure<WereldstoreDatabaseSettings>(
+    Configuration.GetSection(nameof(WereldstoreDatabaseSettings)));
+
+            services.AddSingleton<IWereldstoreDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<WereldstoreDatabaseSettings>>().Value);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
