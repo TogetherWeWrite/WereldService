@@ -40,6 +40,7 @@ namespace WereldService
             services.AddTransient<IWorldRepository, WorldRepository>();
 
             services.AddTransient<IWorldManagementService, WorldManagementService>();
+            services.AddTransient<IWorldOverviewService, WorldOverviewService>();
 
         }
 

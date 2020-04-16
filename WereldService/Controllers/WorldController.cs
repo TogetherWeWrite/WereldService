@@ -9,7 +9,7 @@ using WereldService.Services;
 
 namespace WereldService.Controllers
 {
-    [Route("world")]
+    [Route("worldmanagement")]
     [ApiController]
     public class WorldController : ControllerBase
     {
@@ -29,6 +29,34 @@ namespace WereldService.Controllers
             catch(Exception ex)
             {
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpPut]
+        public ActionResult Put(WorldUpdateRequest updateRequest)
+        {
+            try
+            {
+                _worldManagementService.UpdateWorld(updateRequest);
+                return Ok("Worldname changed to:" + updateRequest.Title);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        public ActionResult Delete(WorldDeleteRequest request)
+        {
+            try
+            {
+                _worldManagementService.DeleteWorld(request);
+                return Ok("world: " + request.Title + "succesfully deleted");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
     }

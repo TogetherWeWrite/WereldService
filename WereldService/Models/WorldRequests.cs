@@ -17,4 +17,10 @@ namespace WereldService.Models
     {
 
     }
+
+    public class WorldOverviewModel
+    {
+        public Guid WorldId { get; set; }
+        public string Title { get; set; }
+    }
 }
