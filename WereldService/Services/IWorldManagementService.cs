@@ -1,4 +1,5 @@
-﻿using WereldService.Models;
+﻿using System.Threading.Tasks;
+using WereldService.Models;
 
 namespace WereldService.Services
 {
@@ -9,7 +10,7 @@ namespace WereldService.Services
         /// </summary>
         /// <param name="request">The user id which will be the owner and the title that you want to name the world</param>
         /// <returns></returns>
-        bool CreateWorld(WorldRequest request);
+        Task<WorldOverviewModel>CreateWorld(WorldRequest request);
         /// <summary>
         /// Deletes world
         /// </summary>

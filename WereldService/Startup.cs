@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WereldService.Helpers;
 using WereldService.Repositories;
 using WereldService.Services;
 using WereldService.WereldStoreDatabaseSettings;
@@ -38,8 +39,12 @@ namespace WereldService
                 sp.GetRequiredService<IOptions<WereldstoreDatabaseSettings>>().Value);
 
             services.AddTransient<IWorldRepository, WorldRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+
+            services.AddTransient<IUserHelper, UserHelper>();
 
             services.AddTransient<IWorldManagementService, WorldManagementService>();
+            services.AddTransient<IWorldOverviewService, WorldOverviewService>();
 
         }
 
