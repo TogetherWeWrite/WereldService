@@ -22,5 +22,7 @@ namespace WereldService.Models
     {
         public Guid WorldId { get; set; }
         public string Title { get; set; }
+        public string OwnerName { get; set; }
+        public int OwnerId { get; set; }
     }
 }

@@ -23,8 +23,8 @@ namespace WereldService.Controllers
         {
             try
             {
-                _worldManagementService.CreateWorld(request);
-                return Ok("World succesfully created");
+                var world = _worldManagementService.CreateWorld(request);
+                return Ok(world);
             }
             catch(Exception ex)
             {
