@@ -8,9 +8,13 @@ namespace WereldService.Helpers
 {
     public class UserHelper : IUserHelper
     {
-        public Task<User> GetOwnerFromAuthentication(int ownerId)
+        public async Task<User> GetOwnerFromAuthentication(int ownerId)
         {
-            throw new NotImplementedException();
+            return new User
+            {
+                Id = ownerId,
+                Name = "GetOwnerFromAuthentication boi"
+            };
         }
     }
 }

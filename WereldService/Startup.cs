@@ -45,6 +45,7 @@ namespace WereldService
 
             services.AddTransient<IWorldManagementService, WorldManagementService>();
             services.AddTransient<IWorldOverviewService, WorldOverviewService>();
+            services.AddTransient<IWorldUserManagementService, WorldManagementService>();
 
         }
 

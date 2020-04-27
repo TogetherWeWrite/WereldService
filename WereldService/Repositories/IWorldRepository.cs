@@ -19,6 +19,7 @@ namespace WereldService.Repositories
         Task<World> Create(World world);
         Task Update(Guid id, World update);
         Task remove(Guid id);
-        
+        Task<List<World>> GetWorldsFromUser(int userId);
+
     }
 }

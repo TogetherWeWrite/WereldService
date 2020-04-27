@@ -13,7 +13,18 @@ namespace WereldService.Entities
         [BsonId]
         public Guid Id { get; set; }
         public string Title { get; set; }
-        public int OwnerId { get; set; }
+        public User Owner { get; set; }
+        public List<User> Writers { get; set; }
+
+        public void AddWriter(User writer)
+        {
+            Writers.Add(writer);
+        }
+
+        public void RemoveWriter(int index)
+        {
+            
+        }
     }
 
     public static class ExtensionMethods
@@ -32,7 +43,34 @@ namespace WereldService.Entities
             var worldList = new List<WorldOverviewModel>();
             world.ForEach(world => worldList.Add(world.ToWorldOverviewModel()));
             return worldList;
+        }
 
+        public static WorldWithDetails ToDetailWorldModel(this World world)
+        {
+            List<Writer> writers = new List<Writer>();
+            world.Writers.ForEach(user => writers.Add(new Writer
+            {
+                Name = user.Name,
+                Id = user.Id
+            }));
+            return new WorldWithDetails
+            {
+                owner = new Owner
+                {
+                    id = world.Owner.Id,
+                    Name = world.Owner.Name
+                },
+                Title = world.Title,
+                WorldId = world.Id,
+                Writers = writers
+            };
+        }
+
+        public static List<WorldWithDetails> ToWorldWithDetailsList(this List<World> worlds)
+        {
+            var worldWithDetailsList = new List<WorldWithDetails>();
+            worlds.ForEach(world => worldWithDetailsList.Add(world.ToDetailWorldModel()));
+            return worldWithDetailsList;
         }
     }
 }

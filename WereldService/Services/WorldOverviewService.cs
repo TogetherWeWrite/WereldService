@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using WereldService.Entities;
+using WereldService.Exceptions;
 using WereldService.Models;
 using WereldService.Repositories;
 
@@ -17,15 +18,30 @@ namespace WereldService.Services
             this._worldRepository = worldRepository;
         }
 
-        public WorldOverviewModel GetWorld(Guid id)
+        public async Task<WorldWithDetails> GetWorld(Guid id)
         {
-            return _worldRepository.Get(id).Result.ToWorldOverviewModel();
+            var world = await _worldRepository.Get(id);
+            if (world == null)
+            {
+                throw new WorldNotFoundException("World with ID: " + id + " Could not be found");
+            }
+            else
+            {
+                return world.ToDetailWorldModel();
+            }
         }
 
-
-        public List<WorldOverviewModel> Search(string search)
+        public async Task<List<WorldWithDetails>> GetWorlds(int userid)
         {
-            return _worldRepository.Search(search).Result.ToWorldOverviewModelList();
+            var worlds = await _worldRepository.GetWorldsFromUser(userid);
+            return worlds.ToWorldWithDetailsList();
         }
+
+        public async Task<List<WorldOverviewModel>> Search(string search)
+        {
+            var worlds = await _worldRepository.Search(search);
+            return worlds.ToWorldOverviewModelList();
+        }
+
     }
 }

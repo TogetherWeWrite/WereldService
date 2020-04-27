@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WereldService.Entities;
+using WereldService.Models;
 using WereldService.WereldStoreDatabaseSettings.authenticationservice.DatastoreSettings;
 
 namespace WereldService.Repositories
@@ -48,6 +49,11 @@ namespace WereldService.Repositories
         public async Task Update(Guid id, World update)
         {
             await _worlds.ReplaceOneAsync(world => world.Id == id, update);
+        }
+
+        public async Task<List<World>> GetWorldsFromUser(int userId)
+        {
+            return await _worlds.Find(world => world.Owner.Id == userId | world.Writers.Any(writer => writer.Id == userId)).ToListAsync();
         }
     }
 }

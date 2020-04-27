@@ -4,26 +4,37 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WereldService.Exceptions;
 using WereldService.Models;
 using WereldService.Services;
 
 namespace WereldService.Controllers
 {
-    [Route("worldmanagement")]
+    [Route("world")]
     [ApiController]
     public class WorldController : ControllerBase
     {
         private readonly IWorldManagementService _worldManagementService;
-        public WorldController(IWorldManagementService worldManagementService)
+        private readonly IWorldOverviewService _worldOverviewService;
+        public WorldController(IWorldManagementService worldManagementService, IWorldOverviewService worldOverviewService)
         {
             this._worldManagementService = worldManagementService;
+            this._worldOverviewService = worldOverviewService;
         }
+
+
+
+        /// <summary>
+        /// Create world
+        /// </summary>
+        /// <param name="request"><see cref="WorldRequest"/></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Post(WorldRequest request)
+        public ActionResult<WorldOverviewModel> Post(WorldRequest request)
         {
             try
             {
-                var world = _worldManagementService.CreateWorld(request);
+                var world = _worldManagementService.CreateWorld(request).Result;
                 return Ok(world);
             }
             catch(Exception ex)
@@ -31,7 +42,11 @@ namespace WereldService.Controllers
                 return BadRequest(ex);
             }
         }
-
+        /// <summary>
+        /// Updates world
+        /// </summary>
+        /// <param name="updateRequest"><see cref="WorldUpdateRequest"/></param>
+        /// <returns></returns>
         [HttpPut]
         public ActionResult Put(WorldUpdateRequest updateRequest)
         {
@@ -46,6 +61,11 @@ namespace WereldService.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes world
+        /// </summary>
+        /// <param name="request"><see cref="WorldDeleteRequest"/></param>
+        /// <returns></returns>
         [HttpDelete]
         public ActionResult Delete(WorldDeleteRequest request)
         {
@@ -55,6 +75,24 @@ namespace WereldService.Controllers
                 return Ok("world: " + request.Title + "succesfully deleted");
             }
             catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the details of a world, need world id
+        /// </summary>
+        /// <param name="id">Guid in the form of a string</param>
+        /// <returns><see cref="WorldWithDetails"/></returns>
+        [HttpGet]
+        public ActionResult<WorldWithDetails> Get(Guid id)
+        {
+            try
+            {
+                return Ok(_worldOverviewService.GetWorld(id).Result);
+            }
+            catch(WorldNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }

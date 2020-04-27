@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,27 +23,29 @@ namespace WereldService.Services
             this._userHelper = userHelper;
         }
 
+        
+
         public async Task<WorldOverviewModel> CreateWorld(WorldRequest request)
         {
             var world = new World()
             {
                 Id = new Guid(),
-                OwnerId = request.UserId,
-                Title = request.Title
+                Title = request.Title,
+                Writers = new List<User>()
             };
             //owner gets from repository and if there is no owner in this datastore then update it from the authenticationservice.
             //TODO: Make the user automatically update with rabbitmq.
-            var owner = await __userRepository.Get(world.OwnerId) ?? await UpdateUser(world.OwnerId);
+            world.Owner = await GetUser(request.UserId);
             world = await _worldRepository.Create(world);
-            return new WorldOverviewModel { Title = world.Title, WorldId = world.Id, OwnerId = owner.Id, OwnerName = owner.Name};
+            return new WorldOverviewModel { Title = world.Title, WorldId = world.Id, OwnerId = world.Owner.Id, OwnerName = world.Owner.Name};
         }
 
-        public bool DeleteWorld(WorldDeleteRequest request)
+        public async Task<bool> DeleteWorld(WorldDeleteRequest request)
         {
             var world = _worldRepository.Get(request.WorldId).Result;
-            if (world.Title == request.Title && world.OwnerId == request.UserId)
+            if (world.Title == request.Title && world.Owner.Id == request.UserId)
             {
-                _worldRepository.remove(request.WorldId);
+                await _worldRepository.remove(request.WorldId);
                 return true;
             }
             else
@@ -51,17 +54,75 @@ namespace WereldService.Services
             }
         }
 
-        public bool UpdateWorld(WorldUpdateRequest request)
+        public async Task<bool> AddWriterToWorld(WriterWorld writerWorld)
         {
-            if(_worldRepository.Get(request.WorldId).Result != null)
+            //Step 1: get user Entity from writer id
+            var user = await GetUser(writerWorld.WriterId);
+            //Step 2: get world Entity from world id
+            World world = await _worldRepository.Get(writerWorld.WorldId);
+            if(world == null)
             {
-                var world = new World()
+                throw new WorldNotFoundException("The world with the id: " + writerWorld.WorldId + " Does not exist");
+            }
+            //step 3: If world has user already as a writer throw exception
+            foreach(User writer in world.Writers)
+            {
+                if(writer.Id == user.Id)
                 {
-                    Id = request.WorldId,
-                    OwnerId = request.UserId,
-                    Title = request.Title
-                };
-                _worldRepository.Update(request.WorldId, world);
+                    throw new UserIsAlreadyAWriterException("The user: " + user.Name + " Already is a writer in this world");
+                }
+            }
+            //Step 3: update world
+            world.AddWriter(user);
+            await _worldRepository.Update(world.Id, world);
+            return true;
+        }
+
+        public async Task<bool> DeleteWriterFromWorld(WriterWorld writerWorld)
+        {
+            //step 1: Get world
+            World world = await _worldRepository.Get(writerWorld.WorldId);
+            if (world == null)
+            {
+                throw new WorldNotFoundException("The world with the id: " + writerWorld.WorldId + " Does not exist");
+            }
+            //step 2: check if writer is indeed a writer on this world
+            User writerInWorld = null;
+            foreach (User writer in world.Writers)
+            {
+                if (writer.Id == writerWorld.WriterId)
+                {
+                    writerInWorld = writer;
+                    
+                    break;
+                }
+            }
+            if (writerInWorld == null)
+            {
+                throw new WriterDoesNotExistInWorldException("Writer does not exist in world.");
+            }
+            //step 3 remove writer
+            world.Writers.Remove(writerInWorld);
+            await _worldRepository.Update(world.Id, world);
+            return true;
+        }
+
+        public async Task<bool> UpdateWorld(WorldUpdateRequest request)
+        {
+            var world = await _worldRepository.Get(request.WorldId);
+            if (world != null)
+            {
+                world.Title = request.Title;
+                world.Owner = await __userRepository.Get(request.UserId) ?? await UpdateUser(request.UserId);
+                try
+                {
+                    await _worldRepository.Update(request.WorldId, world);
+                }
+                catch(Exception ex)
+                {
+                    //TODO implement right exceptions
+                    return false;
+                }
                 return true;
             }
             else
@@ -90,6 +151,10 @@ namespace WereldService.Services
                 return new User() { Id=userId, Name="Unknown"};
             }
             
+        }
+        private async Task<User> GetUser(int userId)
+        {
+            return await __userRepository.Get(userId) ?? await UpdateUser(userId);
         }
     }
 }
