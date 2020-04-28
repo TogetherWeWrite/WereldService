@@ -31,7 +31,8 @@ namespace WereldService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddCors();
+            
             services.Configure<WereldstoreDatabaseSettings>(
                 Configuration.GetSection(nameof(WereldstoreDatabaseSettings)));
 
@@ -46,6 +47,7 @@ namespace WereldService
             services.AddTransient<IWorldManagementService, WorldManagementService>();
             services.AddTransient<IWorldOverviewService, WorldOverviewService>();
             services.AddTransient<IWorldUserManagementService, WorldManagementService>();
+            services.AddControllers();
 
         }
 
@@ -58,6 +60,10 @@ namespace WereldService
             }
 
             app.UseHttpsRedirection();
+            app.UseCors(x => x
+                           .AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader());
 
             app.UseRouting();
 

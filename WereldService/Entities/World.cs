@@ -55,9 +55,9 @@ namespace WereldService.Entities
             }));
             return new WorldWithDetails
             {
-                owner = new Owner
+                Owner = new Owner
                 {
-                    id = world.Owner.Id,
+                    Id = world.Owner.Id,
                     Name = world.Owner.Name
                 },
                 Title = world.Title,

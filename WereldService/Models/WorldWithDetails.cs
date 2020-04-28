@@ -10,13 +10,13 @@ namespace WereldService.Models
     {
         public Guid WorldId { get; set; }
         public string Title { get; set; }
-        public Owner owner { get; set; }
+        public Owner Owner { get; set; }
         public List<Writer> Writers { get; set; }
     }
 
     public class Owner
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
     }
 
