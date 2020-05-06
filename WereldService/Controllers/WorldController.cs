@@ -67,12 +67,18 @@ namespace WereldService.Controllers
         /// <param name="request"><see cref="WorldDeleteRequest"/></param>
         /// <returns></returns>
         [HttpDelete]
-        public ActionResult Delete(WorldDeleteRequest request)
+        public async Task<ActionResult> Delete(WorldDeleteRequest request)
         {
             try
             {
-                _worldManagementService.DeleteWorld(request);
-                return Ok("world: " + request.Title + "succesfully deleted");
+                if(await _worldManagementService.DeleteWorld(request))
+                {
+                    return Ok("world: " + request.Title + "succesfully deleted");
+                }
+                else
+                {
+                    return BadRequest("World not succesfully deleted");
+                }
             }
             catch(Exception ex)
             {

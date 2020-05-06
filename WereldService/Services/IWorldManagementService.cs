@@ -24,6 +24,7 @@ namespace WereldService.Services
         /// </summary>
         /// <param name="request">hold the id of the owner and the guid of the world which it will use to validate if the user is indeed the person that he says he is. and to update title</param>
         /// <returns>if request has been recieved</returns>
+        /// <exception cref="UserNotOwnerException"></exception>
         Task<bool> UpdateWorld(WorldUpdateRequest request);
     }
 
