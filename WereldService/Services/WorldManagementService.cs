@@ -14,12 +14,12 @@ namespace WereldService.Services
     public class WorldManagementService : IWorldManagementService
     {
         private readonly IWorldRepository _worldRepository;
-        private readonly IUserRepository __userRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IUserHelper _userHelper;
         public WorldManagementService(IWorldRepository WorldRepository, IUserRepository userRepository, IUserHelper userHelper)
         {
             this._worldRepository = WorldRepository;
-            this.__userRepository = userRepository;
+            this._userRepository = userRepository;
             this._userHelper = userHelper;
         }
 
@@ -113,7 +113,7 @@ namespace WereldService.Services
             if (world != null)
             {
                 world.Title = request.Title;
-                world.Owner = await __userRepository.Get(request.UserId) ?? await UpdateUser(request.UserId);
+                world.Owner = await _userRepository.Get(request.UserId) ?? await UpdateUser(request.UserId);
                 try
                 {
                     await _worldRepository.Update(request.WorldId, world);
@@ -140,7 +140,8 @@ namespace WereldService.Services
         {
             try
             {
-                return await _userHelper.GetOwnerFromAuthentication(userId);
+                var user = await _userHelper.GetOwnerFromAuthentication(userId);
+                return await _userRepository.Create(user);
             }
             catch(UserDoesNotExistInAuthenticationServiceException ex)
             {
@@ -154,7 +155,7 @@ namespace WereldService.Services
         }
         private async Task<User> GetUser(int userId)
         {
-            return await __userRepository.Get(userId) ?? await UpdateUser(userId);
+            return await _userRepository.Get(userId) ?? await UpdateUser(userId);
         }
     }
 }
