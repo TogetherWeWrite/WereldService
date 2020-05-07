@@ -23,5 +23,13 @@ namespace WereldService.Services
 
         Task<List<WorldWithDetails>> GetWorlds(int userid);
 
+
+        /// <summary>
+        /// Method used for getting multiple worlds, with a list of guids.
+        /// </summary>
+        /// <param name="ids">ids of the worlds you want to get.</param>
+        /// <returns></returns>
+        Task<List<WorldWithDetails>> GetWorlds(List<Guid> ids);
+
     }
 }

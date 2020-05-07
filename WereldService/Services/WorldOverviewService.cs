@@ -43,5 +43,11 @@ namespace WereldService.Services
             return worlds.ToWorldOverviewModelList();
         }
 
+        public async Task<List<WorldWithDetails>> GetWorlds(List<Guid> ids)
+        {
+            var worlds = await _worldRepository.GetWorlds(ids);
+            return worlds.ToWorldWithDetailsList();
+        }
+
     }
 }

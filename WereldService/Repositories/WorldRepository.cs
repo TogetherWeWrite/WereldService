@@ -55,5 +55,10 @@ namespace WereldService.Repositories
         {
             return await _worlds.Find(world => world.Owner.Id == userId | world.Writers.Any(writer => writer.Id == userId)).ToListAsync();
         }
+
+        public async Task<List<World>> GetWorlds(List<Guid> ids)
+        {
+            return await _worlds.Find(world => ids.Contains(world.Id)).ToListAsync();
+        }
     }
 }
