@@ -29,7 +29,7 @@ namespace WereldService.Controllers
         {
             try
             {
-                return Ok(_worldOverviewService.GetWorlds(userId).Result);
+                return Ok(_worldOverviewService.GetWorldsForUser(userId).Result);
             }
             catch (Exception ex)
             {

@@ -21,7 +21,12 @@ namespace WereldService.Services
         /// <returns>0, 1 or more Overviewworlds depening how many exists</returns>
         Task<List<WorldOverviewModel>> Search(string search);
 
-        Task<List<WorldWithDetails>> GetWorlds(int userid);
+        /// <summary>
+        /// Gets the worlds which are relevant to this user.
+        /// </summary>
+        /// <param name="userid">the id of the user</param>
+        /// <returns></returns>
+        Task<List<WorldWithDetails>> GetWorldsForUser(int userid);
 
 
         /// <summary>
