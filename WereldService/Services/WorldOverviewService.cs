@@ -13,9 +13,11 @@ namespace WereldService.Services
     public class WorldOverviewService : IWorldOverviewService
     {
         private readonly IWorldRepository _worldRepository;
-        public WorldOverviewService(IWorldRepository worldRepository)
+        private readonly IUserRepository _userRepository;
+        public WorldOverviewService(IWorldRepository worldRepository, IUserRepository userRepository)
         {
             this._worldRepository = worldRepository;
+            this._userRepository = userRepository;
         }
 
         public async Task<WorldWithDetails> GetWorld(Guid id)
@@ -31,9 +33,26 @@ namespace WereldService.Services
             }
         }
 
-        public async Task<List<WorldWithDetails>> GetWorlds(int userid)
+        public async Task<List<WorldWithDetails>> GetWorldsForUser(int userid)
         {
             var worlds = await _worldRepository.GetWorldsFromUser(userid);
+            var user = await _userRepository.Get(userid);
+            foreach(var world in await _worldRepository.GetWorlds(user.WorldFollowed))
+            {
+                var canAdd = true;
+                foreach(var worldpartof in worlds)
+                {
+                    if(worldpartof.Id == world.Id)
+                    {
+                        canAdd = false;
+                        break;
+                    }
+                }
+                if (canAdd)
+                {
+                    worlds.Add(world);
+                }
+            }
             return worlds.ToWorldWithDetailsList();
         }
 
