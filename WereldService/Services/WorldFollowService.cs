@@ -22,6 +22,10 @@ namespace WereldService.Services
         {
             var user = await getUser(userId);
             var world = await GetWorld(worldId);
+            if (user.WorldFollowed == null)
+            {
+                user.WorldFollowed = new List<Guid>();
+            }
             if (user.WorldFollowed.Contains(worldId))
             {
                 throw new WorldAlreadyFollowedException("The user: " + user.Name + " already follows the world: " + world.Title + ".");
@@ -38,6 +42,10 @@ namespace WereldService.Services
         {
             var user = await getUser(userId);
             var world = await GetWorld(worldId);
+            if (user.WorldFollowed == null)
+            {
+                user.WorldFollowed = new List<Guid>();
+            }
             if (!user.WorldFollowed.Contains(worldId))
             {
                 throw new UserDoesNotFollowWorldException("The user: " + user.Name + " already does not follow the world: " + world.Title + ". So he can not unfollow this world.");
