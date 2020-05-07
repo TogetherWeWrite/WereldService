@@ -141,6 +141,7 @@ namespace WereldService.Services
             try
             {
                 var user = await _userHelper.GetOwnerFromAuthentication(userId);
+                user.WorldFollowed = new List<Guid>();
                 return await _userRepository.Create(user);
             }
             catch(UserDoesNotExistInAuthenticationServiceException ex)
