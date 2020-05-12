@@ -35,6 +35,6 @@ namespace WereldService.Services
         /// <param name="ids">ids of the worlds you want to get.</param>
         /// <returns></returns>
         Task<List<WorldWithDetails>> GetWorlds(List<Guid> ids);
-
+        Task<List<WorldWithDetailsAndFollowers>> GetMostPopularWorlds(int page);
     }
 }

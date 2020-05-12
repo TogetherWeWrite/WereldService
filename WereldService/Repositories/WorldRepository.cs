@@ -60,5 +60,18 @@ namespace WereldService.Repositories
         {
             return await _worlds.Find(world => ids.Contains(world.Id)).ToListAsync();
         }
+
+        public async Task<List<World>> GetMostPopularWorlds(int page)
+        {
+            int pagesize = 25;
+            var filter = Builders<World>.Filter.Exists(world => world.Followers, true);
+            var worlds = await _worlds.Find(filter)
+                .Sort(Builders<World>.Sort.Descending(x => x.Followers))
+                .Skip((page - 1) * pagesize)
+                .Limit(pagesize)
+                .ToListAsync();
+            return worlds;
+        }
+
     }
 }

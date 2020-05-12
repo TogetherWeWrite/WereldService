@@ -67,11 +67,40 @@ namespace WereldService.Entities
             };
         }
 
+        public static WorldWithDetailsAndFollowers ToDetailAndFollowersWorldModel(this World world)
+        {
+            List<Writer> writers = new List<Writer>();
+            world.Writers.ForEach(user => writers.Add(new Writer
+            {
+                Name = user.Name,
+                Id = user.Id
+            }));
+            return new WorldWithDetailsAndFollowers
+            {
+                Owner = new Owner
+                {
+                    Id = world.Owner.Id,
+                    Name = world.Owner.Name
+                },
+                Title = world.Title,
+                WorldId = world.Id,
+                Writers = writers,
+                Followers = world.Followers
+            };
+        }
+
         public static List<WorldWithDetails> ToWorldWithDetailsList(this List<World> worlds)
         {
             var worldWithDetailsList = new List<WorldWithDetails>();
             worlds.ForEach(world => worldWithDetailsList.Add(world.ToDetailWorldModel()));
             return worldWithDetailsList;
+        }
+
+        public static List<WorldWithDetailsAndFollowers> ToWorldWithDetailsAndFollowersList(this List<World> worlds)
+        {
+            var worldWithDetailsAndFollowersList = new List<WorldWithDetailsAndFollowers>();
+            worlds.ForEach(world => worldWithDetailsAndFollowersList.Add(world.ToDetailAndFollowersWorldModel()));
+            return worldWithDetailsAndFollowersList;
         }
     }
 }

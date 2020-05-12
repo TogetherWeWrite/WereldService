@@ -68,5 +68,11 @@ namespace WereldService.Services
             return worlds.ToWorldWithDetailsList();
         }
 
+        public async Task<List<WorldWithDetailsAndFollowers>> GetMostPopularWorlds(int page)
+        {
+           var worlds = await _worldRepository.GetMostPopularWorlds(page);
+            return worlds.ToWorldWithDetailsAndFollowersList();
+        }
+
     }
 }

@@ -103,5 +103,20 @@ namespace WereldService.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("popularlist")]
+        public async  Task<ActionResult<WorldWithDetailsAndFollowers>> GetMostPopularWorlds(int page)
+        {
+            try
+            {
+               List<WorldWithDetailsAndFollowers> worlds = await _worldOverviewService.GetMostPopularWorlds(page);
+               return Ok(worlds);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

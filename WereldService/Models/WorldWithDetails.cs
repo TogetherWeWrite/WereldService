@@ -25,4 +25,9 @@ namespace WereldService.Models
         public int Id { get; set; }
         public string Name { get; set; }
     }
+
+    public class WorldWithDetailsAndFollowers : WorldWithDetails
+    {
+        public int Followers { get; set; }
+    }
 }
