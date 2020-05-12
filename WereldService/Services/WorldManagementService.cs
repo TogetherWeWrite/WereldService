@@ -31,7 +31,8 @@ namespace WereldService.Services
             {
                 Id = new Guid(),
                 Title = request.Title,
-                Writers = new List<User>()
+                Writers = new List<User>(),
+                Followers = 0
             };
             //owner gets from repository and if there is no owner in this datastore then update it from the authenticationservice.
             //TODO: Make the user automatically update with rabbitmq.
