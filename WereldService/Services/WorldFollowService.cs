@@ -34,9 +34,8 @@ namespace WereldService.Services
             {
                 user.WorldFollowed.Add(world.Id);
                 await _userRepository.Update(userId, user);
-                var followWorldPlusOne = await _worldRepository.Get(world.Id);
-                followWorldPlusOne.Followers += 1;
-                await _worldRepository.Update(world.Id, followWorldPlusOne);
+                world.Followers.Add(user);
+                await _worldRepository.Update(world.Id, world);
                 return true;
             }
         }
@@ -57,9 +56,8 @@ namespace WereldService.Services
             {
                 user.WorldFollowed.RemoveAt(user.WorldFollowed.FindIndex(id => id == worldId));
                 await _userRepository.Update(userId, user);
-                var followWorldMinusOne = await _worldRepository.Get(world.Id);
-                followWorldMinusOne.Followers -= 1;
-                await _worldRepository.Update(world.Id, followWorldMinusOne);
+                world.Followers.RemoveAt(world.Followers.FindIndex(x => x.Id == user.Id));
+                await _worldRepository.Update(world.Id, world);
                 return true;
             }
         }

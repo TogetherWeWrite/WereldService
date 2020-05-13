@@ -15,7 +15,7 @@ namespace WereldService.Entities
         public string Title { get; set; }
         public User Owner { get; set; }
         public List<User> Writers { get; set; }
-        public int Followers { get; set; }
+        public List<User> Followers { get; set; }
 
         public void AddWriter(User writer)
         {

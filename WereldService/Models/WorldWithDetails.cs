@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WereldService.Entities;
 
 namespace WereldService.Models
 {
@@ -28,6 +29,6 @@ namespace WereldService.Models
 
     public class WorldWithDetailsAndFollowers : WorldWithDetails
     {
-        public int Followers { get; set; }
+        public List<User> Followers { get; set; }
     }
 }
