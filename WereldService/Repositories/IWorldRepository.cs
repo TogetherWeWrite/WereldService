@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WereldService.Entities;
+using WereldService.Models;
 
 namespace WereldService.Repositories
 {
@@ -21,6 +22,6 @@ namespace WereldService.Repositories
         Task remove(Guid id);
         Task<List<World>> GetWorldsFromUser(int userId);
         Task<List<World>> GetWorlds(List<Guid> ids);
-
+        Task<List<World>> GetMostPopularWorlds(int page);
     }
 }
