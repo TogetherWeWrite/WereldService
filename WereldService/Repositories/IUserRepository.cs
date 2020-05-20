@@ -9,10 +9,10 @@ namespace WereldService.Repositories
     public interface IUserRepository
     {
         
-        Task<User> Get(int id);
+        Task<User> Get(Guid id);
         Task<User> Get(string Name);
         Task<User> Create(User world);
-        Task Update(int id, User update);
-        Task remove(int id);
+        Task Update(Guid id, User update);
+        Task remove(Guid id);
     }
 }

@@ -4,7 +4,7 @@ namespace WereldService.Models
 
     public class WorldRequest
     {
-        public int UserId { get; set; }
+        public Guid UserId { get; set; }
         public string Title { get; set; }
     }
 
@@ -23,6 +23,6 @@ namespace WereldService.Models
         public Guid WorldId { get; set; }
         public string Title { get; set; }
         public string OwnerName { get; set; }
-        public int OwnerId { get; set; }
+        public Guid OwnerId { get; set; }
     }
 }

@@ -51,7 +51,7 @@ namespace WereldService.Repositories
             await _worlds.ReplaceOneAsync(world => world.Id == id, update);
         }
 
-        public async Task<List<World>> GetWorldsFromUser(int userId)
+        public async Task<List<World>> GetWorldsFromUser(Guid userId)
         {
             return await _worlds.Find(world => world.Owner.Id == userId | world.Writers.Any(writer => writer.Id == userId)).ToListAsync();
         }
@@ -60,7 +60,7 @@ namespace WereldService.Repositories
         {
             return await _worlds.Find(world => ids.Contains(world.Id)).ToListAsync();
         }
-
+        
         public async Task<List<World>> GetMostPopularWorlds(int page)
         {
             int pagesize = 25;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 using WereldService.Exceptions;
 using WereldService.Models;
 using WereldService.Services;
@@ -37,7 +38,7 @@ namespace WereldService.Controllers
                 var world = _worldManagementService.CreateWorld(request).Result;
                 return Ok(world);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -71,7 +72,7 @@ namespace WereldService.Controllers
         {
             try
             {
-                if(await _worldManagementService.DeleteWorld(request))
+                if (await _worldManagementService.DeleteWorld(request))
                 {
                     return Ok("world: " + request.Title + "succesfully deleted");
                 }
@@ -80,7 +81,7 @@ namespace WereldService.Controllers
                     return BadRequest("World not succesfully deleted");
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -98,7 +99,7 @@ namespace WereldService.Controllers
             {
                 return Ok(_worldOverviewService.GetWorld(id).Result);
             }
-            catch(WorldNotFoundException ex)
+            catch (WorldNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -106,14 +107,15 @@ namespace WereldService.Controllers
 
         [HttpGet]
         [Route("popularlist")]
-        public async  Task<ActionResult<WorldWithDetailsAndFollowers>> GetMostPopularWorlds(int page)
+        public async Task<ActionResult<WorldWithDetailsAndFollowers>> GetMostPopularWorlds(int page)
         {
+
             try
             {
-               List<WorldWithDetailsAndFollowers> worlds = await _worldOverviewService.GetMostPopularWorlds(page);
-               return Ok(worlds);
+                List<WorldWithDetailsAndFollowers> worlds = await _worldOverviewService.GetMostPopularWorlds(page);
+                return Ok(worlds);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

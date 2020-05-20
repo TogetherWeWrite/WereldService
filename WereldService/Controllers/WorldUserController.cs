@@ -25,11 +25,11 @@ namespace WereldService.Controllers
 
 
         [HttpGet]
-        public ActionResult<List<WorldWithDetails>> GetWorldsOfWhichUserIsPart(int userId)
+        public async Task<ActionResult<List<WorldWithDetails>>> GetWorldsOfWhichUserIsPart(Guid userId)
         {
             try
             {
-                return Ok(_worldOverviewService.GetWorldsForUser(userId).Result);
+                return Ok(await _worldOverviewService.GetWorldsForUser(userId));
             }
             catch (Exception ex)
             {

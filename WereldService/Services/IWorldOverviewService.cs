@@ -26,7 +26,7 @@ namespace WereldService.Services
         /// </summary>
         /// <param name="userid">the id of the user</param>
         /// <returns></returns>
-        Task<List<WorldWithDetails>> GetWorldsForUser(int userid);
+        Task<List<WorldWithDetails>> GetWorldsForUser(Guid userid);
 
 
         /// <summary>

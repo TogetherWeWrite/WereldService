@@ -7,7 +7,7 @@ namespace WereldService.Models
 {
     public class WriterWorld
     {
-        public int WriterId { get; set; }
+        public Guid WriterId { get; set; }
         public Guid WorldId { get; set; }
     }
 }

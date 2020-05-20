@@ -33,7 +33,7 @@ namespace WereldService.Services
             }
         }
 
-        public async Task<List<WorldWithDetails>> GetWorldsForUser(int userid)
+        public async Task<List<WorldWithDetails>> GetWorldsForUser(Guid userid)
         {
             var worlds = await _worldRepository.GetWorldsFromUser(userid);
             var user = await _userRepository.Get(userid);

@@ -16,6 +16,6 @@ namespace WereldService.Helpers
         /// <returns>User  with name and Id from the authentication service</returns>
         /// <exception cref="UserDoesNotExistInAuthenticationServiceException">This exception will be throw if the user does not exist in the authentication service.</exception>
         /// <exception cref="AuthenticationServiceIsNotOnlineException">This exception will be throw if the user does not exist in the authentication service.</exception>
-        Task<User> GetOwnerFromAuthentication(int ownerId);
+        Task<User> GetOwnerFromAuthentication(Guid ownerId);
     }
 }

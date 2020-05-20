@@ -15,7 +15,7 @@ namespace WereldService.Helpers
 {
     public class UserHelper : IUserHelper
     {
-        public async Task<User> GetOwnerFromAuthentication(int ownerId)
+        public async Task<User> GetOwnerFromAuthentication(Guid ownerId)
         {
             string URL = "https://localhost:5001/Account";
             string urlParameters = "?id=" + ownerId;
@@ -33,7 +33,7 @@ namespace WereldService.Helpers
                     JObject jsonObject = JObject.Parse(obj);
                     var user = new User
                     {
-                        Id = (int)jsonObject["id"],
+                        Id = (Guid)jsonObject["id"],
                         Name = (string)jsonObject["name"]
                     };
                     return user;

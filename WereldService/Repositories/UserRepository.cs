@@ -24,7 +24,7 @@ namespace WereldService.Repositories
             return user;
         }
 
-        public async Task<User> Get(int id)
+        public async Task<User> Get(Guid id)
         {
             return await _users.Find(user => user.Id == id).FirstOrDefaultAsync();
         }
@@ -34,12 +34,12 @@ namespace WereldService.Repositories
             return await _users.Find(user => user.Name == Name).FirstOrDefaultAsync();
         }
 
-        public async Task remove(int id)
+        public async Task remove(Guid id)
         {
             await _users.DeleteOneAsync(user => user.Id == id);
         }
 
-        public async Task Update(int id, User update)
+        public async Task Update(Guid id, User update)
         {
             await _users.ReplaceOneAsync(user => user.Id == id, update);
 

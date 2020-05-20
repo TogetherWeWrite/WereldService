@@ -137,7 +137,7 @@ namespace WereldService.Services
         /// </summary>
         /// <param name="userId">UserID</param>
         /// <returns>User</returns>
-        private async Task<User> UpdateUser(int userId)
+        private async Task<User> UpdateUser(Guid userId)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace WereldService.Services
             }
             
         }
-        private async Task<User> GetUser(int userId)
+        private async Task<User> GetUser(Guid userId)
         {
             return await _userRepository.Get(userId) ?? await UpdateUser(userId);
         }

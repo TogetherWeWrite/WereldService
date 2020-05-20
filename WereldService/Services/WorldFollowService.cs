@@ -18,7 +18,7 @@ namespace WereldService.Services
             this._worldRepository = worldRepository;
         }
 
-        public async Task<bool> FollowWorld(int userId, Guid worldId)
+        public async Task<bool> FollowWorld(Guid userId, Guid worldId)
         {
             var user = await getUser(userId);
             var world = await GetWorld(worldId);
@@ -40,7 +40,7 @@ namespace WereldService.Services
             }
         }
 
-        public async Task<bool> UnFollowWorld(int userId, Guid worldId)
+        public async Task<bool> UnFollowWorld(Guid userId, Guid worldId)
         {
             var user = await getUser(userId);
             var world = await GetWorld(worldId);
@@ -69,7 +69,7 @@ namespace WereldService.Services
         /// <returns>User</returns>
         /// <exception cref="UserNotFoundException"></exception>
         /// TODO: WARNING IF NOT MESSAGE QUEUE implemented THIS MIGHT NOT WORK, Because this doesn't get the user from authentication service
-        private async Task<User> getUser(int userId)
+        private async Task<User> getUser(Guid userId)
         {
             return await _userRepository.Get(userId)
                 ?? throw new UserNotFoundException("The user with the id: " + userId + " could not be found");

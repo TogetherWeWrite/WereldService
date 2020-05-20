@@ -17,7 +17,7 @@ namespace WereldService.Services
         /// <exception cref="WorldNotFoundException"></exception>
         /// <exception cref="UserNotFoundException"></exception>
         /// <exception cref="WorldAlreadyFollowedException"></exception>
-        Task<bool> FollowWorld(int userId, Guid worldId);
+        Task<bool> FollowWorld(Guid userId, Guid worldId);
 
         /// <summary>
         /// Used for Unfollowing A World. will return true if succesfull
@@ -28,6 +28,6 @@ namespace WereldService.Services
         /// <exception cref="WorldNotFoundException"></exception>
         /// <exception cref="UserNotFoundException"></exception>
         /// <exception cref="UserDoesNotFollowWorldException"></exception>
-        Task<bool> UnFollowWorld(int userId, Guid worldId);
+        Task<bool> UnFollowWorld(Guid userId, Guid worldId);
     }
 }
