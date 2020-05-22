@@ -36,7 +36,12 @@ namespace WereldService.Services
             };
             //owner gets from repository and if there is no owner in this datastore then update it from the authenticationservice.
             //TODO: Make the user automatically update with rabbitmq.
-            world.Owner = await GetUser(request.UserId);
+            var user = await GetUser(request.UserId);
+            if(user == null)
+            {
+                throw new UserNotFoundException("The user does not exist, if you account has been recently made please wait a minute before trying again.");
+            }
+            world.Owner = user;
             world = await _worldRepository.Create(world);
             return new WorldOverviewModel { Title = world.Title, WorldId = world.Id, OwnerId = world.Owner.Id, OwnerName = world.Owner.Name};
         }
@@ -59,6 +64,10 @@ namespace WereldService.Services
         {
             //Step 1: get user Entity from writer id
             var user = await GetUser(writerWorld.WriterId);
+            if(user == null)
+            {
+                throw new UserNotFoundException("This user does not exist, if this user has just made his account you need to wait a few minutes before trying again");
+            }
             //Step 2: get world Entity from world id
             World world = await _worldRepository.Get(writerWorld.WorldId);
             if(world == null)
@@ -114,16 +123,9 @@ namespace WereldService.Services
             if (world != null)
             {
                 world.Title = request.Title;
-                world.Owner = await _userRepository.Get(request.UserId) ?? await UpdateUser(request.UserId);
-                try
-                {
+                world.Owner = await _userRepository.Get(request.UserId);
                     await _worldRepository.Update(request.WorldId, world);
-                }
-                catch(Exception ex)
-                {
-                    //TODO implement right exceptions
-                    return false;
-                }
+                
                 return true;
             }
             else
@@ -131,33 +133,9 @@ namespace WereldService.Services
                 throw new WorldNotFoundException("The world with the id: " + request.WorldId + " does not exist");
             }
         }
-        /// <summary>
-        /// Updates user from the authentication repository with the UserHelper function <see cref="UserHelper.GetOwnerFromAuthentication(int)"/>
-        /// If this doesn't work it will fill the user name with Unknown
-        /// </summary>
-        /// <param name="userId">UserID</param>
-        /// <returns>User</returns>
-        private async Task<User> UpdateUser(Guid userId)
-        {
-            try
-            {
-                var user = await _userHelper.GetOwnerFromAuthentication(userId);
-                user.WorldFollowed = new List<Guid>();
-                return await _userRepository.Create(user);
-            }
-            catch(UserDoesNotExistInAuthenticationServiceException ex)
-            {
-                return new User() { Id=userId, Name="Unknown"};
-            }
-            catch(AuthenticationServiceIsNotOnlineException ex)
-            {
-                return new User() { Id=userId, Name="Unknown"};
-            }
-            
-        }
         private async Task<User> GetUser(Guid userId)
         {
-            return await _userRepository.Get(userId) ?? await UpdateUser(userId);
+            return await _userRepository.Get(userId);
         }
     }
 }

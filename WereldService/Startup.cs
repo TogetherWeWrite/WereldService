@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MessageBroker;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WereldService.Helpers;
+using WereldService.MessageHandlers;
 using WereldService.Repositories;
 using WereldService.Services;
 using WereldService.WereldStoreDatabaseSettings;
@@ -48,6 +50,12 @@ namespace WereldService
             services.AddTransient<IWorldManagementService, WorldManagementService>();
             services.AddTransient<IWorldOverviewService, WorldOverviewService>();
             services.AddTransient<IWorldUserManagementService, WorldManagementService>();
+
+            #region messageConsumers
+            services.AddMessageConsumer(Configuration["MessageQueueSettings:Uri"],
+                "authentication-service",
+                builder => builder.WithHandler<UserMessageHandler>("register-new-user"));
+            #endregion
             services.AddControllers();
 
         }
