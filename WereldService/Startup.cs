@@ -72,7 +72,6 @@ namespace WereldService
             services.AddTransient<IWorldRepository, WorldRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
 
-            services.AddTransient<IUserHelper, UserHelper>();
             services.AddTransient<IAuthenticationHelper, AuthenticationHelper>();
 
             services.AddTransient<IWorldFollowService, WorldFollowService>();

@@ -15,13 +15,11 @@ namespace WereldService.Services
     {
         private readonly IWorldRepository _worldRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IUserHelper _userHelper;
         private readonly IAuthenticationHelper _authenticationHelper;
-        public WorldManagementService(IWorldRepository WorldRepository, IUserRepository userRepository, IUserHelper userHelper, IAuthenticationHelper authenticationHelper)
+        public WorldManagementService(IWorldRepository WorldRepository, IUserRepository userRepository, IAuthenticationHelper authenticationHelper)
         {
             this._worldRepository = WorldRepository;
             this._userRepository = userRepository;
-            this._userHelper = userHelper;
             this._authenticationHelper = authenticationHelper;
         }
 

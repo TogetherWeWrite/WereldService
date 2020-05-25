@@ -59,7 +59,7 @@ namespace WereldService.Controllers
             {
                 return Unauthorized(ex.Message);
             }
-            catch (Exception ex)//TODO specific exception handling
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
