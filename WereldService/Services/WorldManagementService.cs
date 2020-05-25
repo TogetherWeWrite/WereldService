@@ -7,6 +7,7 @@ using WereldService.Entities;
 using WereldService.Exceptions;
 using WereldService.Helpers;
 using WereldService.Models;
+using WereldService.Publishers;
 using WereldService.Repositories;
 
 namespace WereldService.Services
@@ -16,11 +17,13 @@ namespace WereldService.Services
         private readonly IWorldRepository _worldRepository;
         private readonly IUserRepository _userRepository;
         private readonly IAuthenticationHelper _authenticationHelper;
-        public WorldManagementService(IWorldRepository WorldRepository, IUserRepository userRepository, IAuthenticationHelper authenticationHelper)
+        private readonly IWorldPublisher _worldPublisher;
+        public WorldManagementService(IWorldRepository WorldRepository, IUserRepository userRepository, IAuthenticationHelper authenticationHelper, IWorldPublisher worldPublisher)
         {
             this._worldRepository = WorldRepository;
             this._userRepository = userRepository;
             this._authenticationHelper = authenticationHelper;
+            this._worldPublisher = worldPublisher;
         }
 
 
@@ -42,6 +45,7 @@ namespace WereldService.Services
             }
             world.Owner = user;
             world = await _worldRepository.Create(world);
+            await _worldPublisher.PublishNewWorld(world);
             return new WorldOverviewModel { Title = world.Title, WorldId = world.Id, OwnerId = world.Owner.Id, OwnerName = world.Owner.Name };
         }
 
@@ -51,6 +55,7 @@ namespace WereldService.Services
             if (world.Title == request.Title && world.Owner.Id == request.UserId)
             {
                 await _worldRepository.remove(request.WorldId);
+                await _worldPublisher.DeleteWorldWorld(request.WorldId);
                 return true;
             }
             else
@@ -86,6 +91,7 @@ namespace WereldService.Services
                 //Step 3: update world
                 world.AddWriter(user);
                 await _worldRepository.Update(world.Id, world);
+
                 return true;
             }
             else
@@ -138,7 +144,7 @@ namespace WereldService.Services
                 world.Title = request.Title;
                 world.Owner = await _userRepository.Get(request.UserId);
                 await _worldRepository.Update(request.WorldId, world);
-
+                await _worldPublisher.PublishUpdateWorld(request.WorldId, world.Title);
                 return true;
             }
             else
