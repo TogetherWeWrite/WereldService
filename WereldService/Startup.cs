@@ -17,8 +17,10 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WereldService.Helpers;
 using WereldService.MessageHandlers;
+using WereldService.Publishers;
 using WereldService.Repositories;
 using WereldService.Services;
+using WereldService.Settings;
 using WereldService.WereldStoreDatabaseSettings;
 using WereldService.WereldStoreDatabaseSettings.authenticationservice.DatastoreSettings;
 
@@ -68,22 +70,42 @@ namespace WereldService
 
             services.AddSingleton<IWereldstoreDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<WereldstoreDatabaseSettings>>().Value);
+            #region mq
+            
+            services.Configure<MessageQueueSettings>(Configuration.GetSection("MessageQueueSettings"));
+            services.AddMessagePublisher(Configuration["MessageQueueSettings:Uri"]);
+            services.AddMessageConsumer(Configuration["MessageQueueSettings:Uri"],
+                "authentication-service",
+                builder => builder.WithHandler<UserMessageHandler>("register-new-user"));
+            services.AddTransient<IWorldPublisher, WorldPublisher>();
+            
+            #endregion
 
+            #region repos
+            
             services.AddTransient<IWorldRepository, WorldRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
+            
+            #endregion
 
+            #region helper
+            
             services.AddTransient<IAuthenticationHelper, AuthenticationHelper>();
+
+            #endregion
+
+            #region services
 
             services.AddTransient<IWorldFollowService, WorldFollowService>();
             services.AddTransient<IWorldManagementService, WorldManagementService>();
             services.AddTransient<IWorldOverviewService, WorldOverviewService>();
             services.AddTransient<IWorldUserManagementService, WorldManagementService>();
 
-            #region messageConsumers
-            services.AddMessageConsumer(Configuration["MessageQueueSettings:Uri"],
-                "authentication-service",
-                builder => builder.WithHandler<UserMessageHandler>("register-new-user"));
             #endregion
+
+
+
+
             services.AddControllers();
 
         }
