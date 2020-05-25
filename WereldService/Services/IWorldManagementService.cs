@@ -37,7 +37,7 @@ namespace WereldService.Services
         /// <returns>bool if succesful</returns>
         /// <exception cref="WorldNotFoundException"></exception>
         /// <exception cref="UserIsAlreadyAWriterException"></exception>
-        Task<bool> AddWriterToWorld(WriterWorld writerWorld);
+        Task<bool> AddWriterToWorld(WriterWorld writerWorld, string jwt);
         /// <summary>
         /// Deletes a writer from the world.
         /// </summary>
@@ -45,6 +45,6 @@ namespace WereldService.Services
         /// <returns></returns>
         /// <exception cref="WorldNotFoundException"></exception>
         /// <exception cref="WriterDoesNotExistInWorldException"></exception>
-        Task<bool> DeleteWriterFromWorld(WriterWorld writerWorld);
+        Task<bool> DeleteWriterFromWorld(WriterWorld writerWorld, string jwt);
     }
 }

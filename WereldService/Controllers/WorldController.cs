@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using WereldService.Exceptions;
+using WereldService.Helpers;
 using WereldService.Models;
 using WereldService.Services;
 
@@ -17,10 +20,12 @@ namespace WereldService.Controllers
     {
         private readonly IWorldManagementService _worldManagementService;
         private readonly IWorldOverviewService _worldOverviewService;
-        public WorldController(IWorldManagementService worldManagementService, IWorldOverviewService worldOverviewService)
+        private readonly IAuthenticationHelper _authenticationHelper;
+        public WorldController(IWorldManagementService worldManagementService, IWorldOverviewService worldOverviewService, IAuthenticationHelper authenticationHelper)
         {
             this._worldManagementService = worldManagementService;
             this._worldOverviewService = worldOverviewService;
+            this._authenticationHelper = authenticationHelper;
         }
 
 
@@ -31,34 +36,53 @@ namespace WereldService.Controllers
         /// <param name="request"><see cref="WorldRequest"/></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<WorldOverviewModel> Post(WorldRequest request)
+        [Authorize]
+        public ActionResult<WorldOverviewModel> Post(WorldRequest request, [FromHeader(Name = "Authorization")] string jwt)
         {
-            try
+            var idclaim = _authenticationHelper.getUserIdFromToken(jwt);
+            if (idclaim == request.UserId)
             {
-                var world = _worldManagementService.CreateWorld(request).Result;
-                return Ok(world);
+                try
+                {
+                    var world = _worldManagementService.CreateWorld(request).Result;
+                    return Ok(world);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex);
+                return Unauthorized("You are not authorised to do this");
             }
         }
+
         /// <summary>
         /// Updates world
         /// </summary>
         /// <param name="updateRequest"><see cref="WorldUpdateRequest"/></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult Put(WorldUpdateRequest updateRequest)
+        [Authorize]
+        public ActionResult Put(WorldUpdateRequest updateRequest, [FromHeader(Name = "Authorization")] string jwt)
         {
-            try
+            var idclaim = _authenticationHelper.getUserIdFromToken(jwt);
+            if (idclaim == updateRequest.UserId)
             {
-                _worldManagementService.UpdateWorld(updateRequest);
-                return Ok("Worldname changed to:" + updateRequest.Title);
+                try
+                {
+                    _worldManagementService.UpdateWorld(updateRequest);
+                    return Ok("Worldname changed to:" + updateRequest.Title);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.Message);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                return Unauthorized("You are not authorised to do this");
             }
         }
 
@@ -68,22 +92,32 @@ namespace WereldService.Controllers
         /// <param name="request"><see cref="WorldDeleteRequest"/></param>
         /// <returns></returns>
         [HttpDelete]
-        public async Task<ActionResult> Delete(WorldDeleteRequest request)
+        [Authorize]
+        public async Task<ActionResult> Delete(WorldDeleteRequest request, [FromHeader(Name = "Authorization")] string jwt)
         {
-            try
+            var idclaim = _authenticationHelper.getUserIdFromToken(jwt);
+            if (idclaim == request.UserId)
             {
-                if (await _worldManagementService.DeleteWorld(request))
+                try
                 {
-                    return Ok("world: " + request.Title + "succesfully deleted");
+                    if (await _worldManagementService.DeleteWorld(request))
+                    {
+                        return Ok("world: " + request.Title + "succesfully deleted");
+                    }
+                    else
+                    {
+                        return BadRequest("World not succesfully deleted");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    return BadRequest("World not succesfully deleted");
+                    return BadRequest(ex.Message);
                 }
             }
-            catch (Exception ex)
+            else
             {
-                return BadRequest(ex.Message);
+                return Unauthorized("You are not authorised to do this");
+
             }
         }
 
