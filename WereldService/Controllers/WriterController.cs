@@ -21,6 +21,7 @@ namespace WereldService.Controllers
         }
 
         [HttpPost]
+        [Microsoft.AspNetCore.Authorization.Authorize]
         public async Task<ActionResult<bool>> Post(WorldFollowModel request, [FromHeader(Name = "Authorization")] string jwt)
         {
             try
