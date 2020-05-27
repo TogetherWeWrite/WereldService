@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wereld-service
+  namespace: production
+spec:
+  selector:
+    app: wereld-service
+  ports:
+    - port: 80
+      targetPort: 80

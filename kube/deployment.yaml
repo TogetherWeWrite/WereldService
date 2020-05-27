@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wereld-service
+  namespace: production
+  labels:
+    app: wereld-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wereld-service
+  template:
+    metadata:
+      labels:
+        app: wereld-service
+    spec:
+      containers:
+        - image: bstijnb/wereldservice
+          imagePullPolicy: IfNotPresent
+          name: wereld-service
+          ports: 
+            - containerPort: 80

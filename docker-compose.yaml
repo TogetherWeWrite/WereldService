@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+  mongo-wereldservice:
+    image: mongo:3.6.17-xenial
+    container_name: mongo-wereldservice
+    restart: unless-stopped
+    ports: 
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: WereldServiceStore
+      MONGO_INITDB_ROOT_USERNAME: WereldService
+      MONGO_INITDB_ROOT_PASSWORD: ahkjfhkdjashfkjdhas
+ 
+
