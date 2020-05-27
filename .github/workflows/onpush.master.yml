@@ -59,7 +59,7 @@ jobs:
           docker push $CONTAINER_IMAGE
           docker push $CONTAINER_IMAGE_LATEST
 
- deploy:
+  deploy:
     needs: deliver
     runs-on: ubuntu-18.04
     steps:
