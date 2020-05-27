@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: wereld-ingress
+  name: wereldingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -9,10 +9,6 @@ spec:
   - host: wereld.stijnbaltessen.digital
     http:
       paths:
-      - backend:
-          serviceName: wereld-service
-          servicePort: 80
-status:
-  loadBalancer:
-    ingress:
-    - ip: 207.180.241.181
+        - backend:
+            serviceName: wereld-service
+            servicePort: 80
