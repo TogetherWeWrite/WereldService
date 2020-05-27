@@ -8,6 +8,6 @@ spec:
     - port: 80
       targetPort: 80
       protocol: TCP
-      nodePort: 31000
+      nodePort: 31002
   selector:
     app: wereld-service
