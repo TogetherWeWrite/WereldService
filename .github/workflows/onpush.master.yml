@@ -60,7 +60,7 @@ jobs:
           docker push $CONTAINER_IMAGE_LATEST
 
   deploy:
-    needs: deliver
+    needs: delivery
     runs-on: ubuntu-18.04
     steps:
       - name: Download kubernetes artifact
