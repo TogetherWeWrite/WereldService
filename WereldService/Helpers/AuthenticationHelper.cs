@@ -10,11 +10,9 @@ namespace WereldService.Helpers
     {
         public Guid getUserIdFromToken(string jwt)
         {
-            var handler = new JwtSecurityTokenHandler();
-            var token = new System.IdentityModel.Tokens.Jwt.JwtSecurityToken(jwt.Replace("Bearer ", String.Empty));
+            var token = new JwtSecurityToken(jwt.Replace("Bearer ", String.Empty));
             var idclaim = Guid.Parse((string)token.Payload["unique_name"]);
             return idclaim;
-
         }
     }
 }

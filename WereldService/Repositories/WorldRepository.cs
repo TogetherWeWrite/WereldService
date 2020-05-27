@@ -17,7 +17,7 @@ namespace WereldService.Repositories
             var client = new MongoClient(set.ConnectionString);
             var database = client.GetDatabase(set.DatabaseName);
 
-            _worlds = database.GetCollection<World>(set.UserCollectionName);
+            _worlds = database.GetCollection<World>(set.WorldCollectionName);
         }
 
         public async Task<World> Create(World world)

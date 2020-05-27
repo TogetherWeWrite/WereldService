@@ -10,6 +10,7 @@ namespace WereldService.WereldStoreDatabaseSettings
         public class WereldstoreDatabaseSettings : IWereldstoreDatabaseSettings
         {
             public string UserCollectionName { get; set; }
+            public string WorldCollectionName { get; set; }
             public string ConnectionString { get; set; }
             public string DatabaseName { get; set; }
         }
@@ -17,6 +18,7 @@ namespace WereldService.WereldStoreDatabaseSettings
         public interface IWereldstoreDatabaseSettings
         {
             string UserCollectionName { get; set; }
+            string WorldCollectionName { get; set; }
             string ConnectionString { get; set; }
             string DatabaseName { get; set; }
         }
