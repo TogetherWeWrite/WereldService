@@ -1,11 +1,11 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: authentication-service
+  name: wereld-service
 spec:
   type: NodePort
   ports:
     - port: 80
       targetPort: 80
   selector:
-    app: authentication-service
+    app: wereld-service
