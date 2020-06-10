@@ -127,11 +127,11 @@ namespace WereldService.Controllers
         /// <param name="id">Guid in the form of a string</param>
         /// <returns><see cref="WorldWithDetails"/></returns>
         [HttpGet]
-        public ActionResult<WorldWithDetails> Get(Guid id)
+        public async Task<ActionResult<WorldWithDetails>> Get(Guid id)
         {
             try
             {
-                return Ok(_worldOverviewService.GetWorld(id).Result);
+                return Ok(await _worldOverviewService.GetWorld(id));
             }
             catch (WorldNotFoundException ex)
             {
