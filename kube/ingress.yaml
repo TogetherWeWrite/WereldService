@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: wereld.stijnbaltessen.digital
+  - host: world.stijnbaltessen.digital
     http:
       paths:
         - backend:
