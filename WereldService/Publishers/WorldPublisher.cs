@@ -21,8 +21,7 @@ namespace WereldService.Publishers
         public async Task PublishNewWorld(World world)
         {
             await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "cell-service", "new-world", new { Id = world.Id, Title = world.Title });
-            //TODO when verhaal-service implemented added publish.
-            //await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "new-world", new { Id = world.Id, Title = world.Title });
+            await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "new-world", new { Id = world.Id, Title = world.Title });
         }
 
         public async Task PublishUpdateWorld(Guid id, string newTitle)
