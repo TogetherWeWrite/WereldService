@@ -27,11 +27,14 @@ namespace WereldService.Publishers
         public async Task PublishUpdateWorld(Guid id, string newTitle)
         {
             await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "cell-service", "update-world", new { Id = id, NewTitle = newTitle });
+            await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "update-world", new { Id = id, NewTitle = newTitle });
         }
 
         public async Task DeleteWorldWorld(Guid id)
         {
             await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "cell-service", "delete-world", new { Id = id });
+            await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "delete-world", new { Id = id });
+
 
         }
     }
