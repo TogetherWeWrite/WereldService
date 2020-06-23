@@ -21,18 +21,20 @@ namespace WereldService.Publishers
         public async Task PublishNewWorld(World world)
         {
             await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "cell-service", "new-world", new { Id = world.Id, Title = world.Title });
-            //TODO when verhaal-service implemented added publish.
-            //await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "new-world", new { Id = world.Id, Title = world.Title });
+            await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "new-world", new { Id = world.Id, Title = world.Title });
         }
 
         public async Task PublishUpdateWorld(Guid id, string newTitle)
         {
             await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "cell-service", "update-world", new { Id = id, NewTitle = newTitle });
+            await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "update-world", new { Id = id, NewTitle = newTitle });
         }
 
         public async Task DeleteWorldWorld(Guid id)
         {
             await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "cell-service", "delete-world", new { Id = id });
+            await _messageQueuePublisher.PublishMessageAsync(_messageQueueSettings.Exchange, "verhaal-service", "delete-world", new { Id = id });
+
 
         }
     }
